@@ -4,7 +4,7 @@ import sys
 import traceback
 import os
 import view.windowui
-import model.nifcleaner as nif
+import model.sky2blender as nif
 
 
 class ExampleApp(QtWidgets.QMainWindow, view.windowui.Ui_MainWindow):
@@ -15,7 +15,7 @@ class ExampleApp(QtWidgets.QMainWindow, view.windowui.Ui_MainWindow):
         # access variables, methods etc in the design.py file
         super(self.__class__, self).__init__()
         self.setupUi(self)
-        self.nifconverter = nif.NifConverter()
+        self.nifconverter = nif.SkyToBlenderConverter()
         self.browseButton.clicked.connect(self.search_file)
         self.convertButton.clicked.connect(self.convert_file)
 
