@@ -1,5 +1,6 @@
 from pyffi.formats.nif import *
 import os
+import traceback
 
 
 class NifConverter:
@@ -8,13 +9,12 @@ class NifConverter:
         self.errorfile = ''
         self.files = []
 
-    def convert_nif(self, path):
-        stream = open(path, 'rb')
+    def convert_nif(self):
+        # stream = open(path, 'rb')
         data = NifFormat.Data()
-        retcode = 0
         if self.pathname != '' and os.path.isdir(self.pathname):
             for astream, adata in NifFormat.walkData(self.pathname):
-                retcode = self.__do_convert(astream,adata)
+                retcode = self.__do_convert(astream, adata)
                 if retcode > 0:
                     break
         elif self.files:

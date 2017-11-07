@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QFileDialog,QMessageBox
 import sys
+import traceback
 import os
 import view.windowui
 import model.nifcleaner as nif
@@ -16,7 +17,7 @@ class ExampleApp(QtWidgets.QMainWindow, view.windowui.Ui_MainWindow):
         self.setupUi(self)
         self.nifconverter = nif.NifConverter()
         self.browseButton.clicked.connect(self.search_file)
-        self.convertButton.clicked.connect(self.search_file)
+        self.convertButton.clicked.connect(self.convert_file)
 
     def search_file(self):
         display = ''
@@ -33,7 +34,15 @@ class ExampleApp(QtWidgets.QMainWindow, view.windowui.Ui_MainWindow):
         self.pathText.setText(display)
 
     def convert_file(self):
-        exitcode = self.nifconverter.convert_nif(self)
+        try:
+            exitcode = self.nifconverter.convert_nif()
+            if exitcode == 0:
+                QMessageBox.information(self,'Info','Conversion done')
+            else:
+                QMessageBox.information(self,'Info','Error during conversion')
+        except Exception:
+            traceback.print_exc()
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)  # A new instance of QApplication
