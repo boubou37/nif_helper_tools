@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QFileDialog,QMessageBox
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 import sys
 import traceback
 import os
@@ -26,7 +26,8 @@ class ExampleApp(QtWidgets.QMainWindow, view.windowui.Ui_MainWindow):
             self.nifconverter.pathname = file_name
             display = file_name
         elif self.radioFileSearch.isChecked():
-            file_names = QFileDialog.getOpenFileNames(self,"Open Files", "", "Nif Files (*.nif)")
+            file_names = QFileDialog.getOpenFileNames(self, "Open Files", "", "Nif Files (*.nif)")
+            # indexes -> 0: list of files, 1 : file extension
             if file_names:
                 if file_names[0]:
                     self.nifconverter.files = file_names[0]
@@ -35,11 +36,11 @@ class ExampleApp(QtWidgets.QMainWindow, view.windowui.Ui_MainWindow):
 
     def convert_file(self):
         try:
-            exitcode = self.nifconverter.convert_nif()
+            exitcode = self.nifconverter.nif_to_blender()
             if exitcode == 0:
-                QMessageBox.information(self,'Info','Conversion done')
+                QMessageBox.information(self, 'Info', 'Conversion done')
             else:
-                QMessageBox.information(self,'Info','Error during conversion')
+                QMessageBox.information(self, 'Info', 'Error during conversion')
         except Exception:
             traceback.print_exc()
 

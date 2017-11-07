@@ -6,22 +6,29 @@ import traceback
 class NifConverter:
     def __init__(self):
         self.pathname = ''
+        self.data = NifFormat.Data()
         self.errorfile = ''
         self.files = []
 
-    def convert_nif(self):
-        # stream = open(path, 'rb')
-        data = NifFormat.Data()
+    def nif_to_blender(self):
         if self.pathname != '' and os.path.isdir(self.pathname):
             for astream, adata in NifFormat.walkData(self.pathname):
-                retcode = self.__do_convert(astream, adata)
+                retcode = self.__do_convert_nif_to_blender(astream, adata)
                 if retcode > 0:
                     break
         elif self.files:
-            print
+            for file in self.files:
+                stream = open(file,'rb')
+                retcode = self.__do_convert_nif_to_blender(stream,self.data)
+
         return retcode
 
-    def __do_convert(self, stream, data):
+    def __do_convert_nif_to_blender(self, stream, data):
+        data.inspect(stream)
+        # we dont open fallout3/nv files as they are already blender compatible
+        if data.header.user_version == 11 and data.header.user_version_2 == 34:
+            return 0
+
         data.read(stream)
         for root in data.roots:
             for block in root.tree():
@@ -30,6 +37,7 @@ class NifConverter:
                         block.bs_properties[0] = None
                     if block.bs_properties[1] is not None:
                         block.bs_properties[1] = None
+
 
         namenoext = os.path.basename(os.path.splitext(stream.name)[0])
         stream = open(stream.name.replace(namenoext, namenoext + '_blender'), 'wb')
