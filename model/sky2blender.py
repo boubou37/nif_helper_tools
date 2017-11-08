@@ -4,8 +4,8 @@ import model.nifcleaner as nc
 
 
 class SkyToBlenderConverter(nc.NifCleaner):
-    def convert(self):
-        pass
+    def clean_nif(self):
+        return self.nif_to_blender()
 
     def __init__(self):
         super().__init__()

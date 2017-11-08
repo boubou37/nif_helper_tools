@@ -8,6 +8,8 @@ class NifCleaner:
         self.data = NifFormat.Data()
         self.errorfile = ''
         self.files = []
+        self.radioDirCheck = False
+        self.radioFileCheck = False
 
-    def convert(self):
+    def clean_nif(self):
         raise NotImplementedError('this is an abstract method')

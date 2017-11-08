@@ -3,6 +3,9 @@ import model.nifcleaner as nc
 
 
 class BlenderToSkyConverter(nc.NifCleaner):
+    def clean_nif(self):
+        return 0
+
     def __init__(self):
         super().__init__()
 
