@@ -20,6 +20,8 @@ class ExampleApp(QtWidgets.QMainWindow, view.windowui.Ui_MainWindow):
         self.sky_to_blender_conv = s2b.SkyToBlenderConverter()
         self.blender_to_sky_conv = b2s.BlenderToSkyConverter()
         self.setup_connections()
+        self.progressBar.hide()
+        self.progressBarBS.hide()
 
     def setup_connections(self):
         self.radioDirSearch.clicked.connect(lambda: self.set_file_mode(self.sky_to_blender_conv, 1))
@@ -28,8 +30,8 @@ class ExampleApp(QtWidgets.QMainWindow, view.windowui.Ui_MainWindow):
         self.radioFileSearchBS.clicked.connect(lambda: self.set_file_mode(self.blender_to_sky_conv, 2))
         self.browseButton.clicked.connect(lambda: self.search_file(self.sky_to_blender_conv))
         self.browseBS.clicked.connect(lambda: self.search_file(self.blender_to_sky_conv))
-        self.convertButton.clicked.connect(lambda: self.convert_file(self.sky_to_blender_conv))
-        self.convertButtonBS.clicked.connect(lambda: self.convert_file(self.blender_to_sky_conv))
+        self.convertButton.clicked.connect(lambda: self.convert_file(self.sky_to_blender_conv, self.progressBar))
+        self.convertButtonBS.clicked.connect(lambda: self.convert_file(self.blender_to_sky_conv, self.progressBarBS))
 
     def set_file_mode(self, converter, val):
         if val == 1:
@@ -65,7 +67,8 @@ class ExampleApp(QtWidgets.QMainWindow, view.windowui.Ui_MainWindow):
         else:
             self.pathTextBS.setText(display)
 
-    def convert_file(self, converter):
+    def convert_file(self, converter, progressBar):
+        converter.progressBar = progressBar
         try:
             exitcode = converter.clean_nif()
             if exitcode == 0:

@@ -40,6 +40,7 @@ class BlenderToSkyConverter(nc.NifCleaner):
 
         try:
             data.write(stream)
+            self.progressBar.setValue(self.progressBar.value()+1)
         except IOError:
             traceback.print_exc()
             retcode = 1
