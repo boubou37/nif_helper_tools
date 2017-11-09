@@ -22,10 +22,10 @@ class ExampleApp(QtWidgets.QMainWindow, view.windowui.Ui_MainWindow):
         self.setup_connections()
 
     def setup_connections(self):
-        self.radioDirSearch.clicked.connect(lambda: self.set_file_mode(self.sky_to_blender_conv,1))
-        self.radioFileSearch.clicked.connect(lambda: self.set_file_mode(self.sky_to_blender_conv,2))
-        self.radioDirSearchBS.clicked.connect(lambda: self.set_file_mode(self.blender_to_sky_conv,1))
-        self.radioFileSearchBS.clicked.connect(lambda: self.set_file_mode(self.blender_to_sky_conv,2))
+        self.radioDirSearch.clicked.connect(lambda: self.set_file_mode(self.sky_to_blender_conv, 1))
+        self.radioFileSearch.clicked.connect(lambda: self.set_file_mode(self.sky_to_blender_conv, 2))
+        self.radioDirSearchBS.clicked.connect(lambda: self.set_file_mode(self.blender_to_sky_conv, 1))
+        self.radioFileSearchBS.clicked.connect(lambda: self.set_file_mode(self.blender_to_sky_conv, 2))
         self.browseButton.clicked.connect(lambda: self.search_file(self.sky_to_blender_conv))
         self.browseBS.clicked.connect(lambda: self.search_file(self.blender_to_sky_conv))
         self.convertButton.clicked.connect(lambda: self.convert_file(self.sky_to_blender_conv))
@@ -50,6 +50,7 @@ class ExampleApp(QtWidgets.QMainWindow, view.windowui.Ui_MainWindow):
         if radio_dir_checked:
             file_name = QFileDialog.getExistingDirectory(self, "Select directory")
             converter.pathname = file_name
+            converter.files = []  # we keep mutually exclusive behavior
             display = file_name
         elif radio_file_checked:
             file_names = QFileDialog.getOpenFileNames(self, "Open Files", "", "Nif Files (*.nif)")
@@ -57,8 +58,12 @@ class ExampleApp(QtWidgets.QMainWindow, view.windowui.Ui_MainWindow):
             if file_names:
                 if file_names[0]:
                     converter.files = file_names[0]
+                    converter.pathname = '' # we keep mutually exclusive behavior
                     display = os.path.dirname(file_names[0][0])
-        self.pathText.setText(display)
+        if isinstance(converter,s2b.SkyToBlenderConverter):
+            self.pathText.setText(display)
+        else:
+            self.pathTextBS.setText(display)
 
     def convert_file(self, converter):
         try:

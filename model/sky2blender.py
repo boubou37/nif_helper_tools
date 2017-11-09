@@ -9,7 +9,7 @@ class SkyToBlenderConverter(nc.NifCleaner):
 
     def convert_nif(self, stream, data):
         data.inspect(stream)
-        # we dont open fallout3/nv files as they are already blender compatible
+        # we dont want to open fallout3/nv files as they are already blender compatible
         if data.header.user_version == 11 and data.header.user_version_2 == 34:
             return 0
 
