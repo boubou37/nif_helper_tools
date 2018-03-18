@@ -30,6 +30,7 @@ class BlenderToSkyConverter(nc.NifCleaner):
                     bsst.num_textures = 9
                     bsst.textures.update_size()
                     bsl.texture_set = bsst
+                    bsl.texture_clamp_mode = NifFormat.TexClampMode.WRAP_S_WRAP_T
                     block.bs_properties[0] = bsl
 
         # we append '_sky' to the file name
